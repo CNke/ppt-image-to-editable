@@ -1,49 +1,82 @@
 # PPT Image To Editable
 
-Convert flattened or image-only PowerPoint decks into editable PPTX files by
-reconstructing slide backgrounds, visual elements, native shapes, and editable
-text layers.
+English | [简体中文](README.zh-CN.md)
 
-This repository is packaged as a Codex skill. It contains the conversion
-workflow, reusable validation scripts, and reference rules for high-fidelity
-image-to-PPT reconstruction.
+This repository provides a Codex skill for converting slide images into
+editable PowerPoint files.
+
+It is not a standalone PPT generator. It does not design a deck from a prompt
+or create PPT pages by itself. Its purpose is to help Codex reconstruct an
+existing PPT image as faithfully as possible into an editable `.pptx` file:
+editable text boxes, native shapes where appropriate, and complete image
+elements for visuals that should remain visually intact.
+
+The prerequisite is that you already have PPT slide images. A recommended
+workflow is to generate or obtain the slide images first, for example with
+`gpt-image`, and then use this skill to convert those images into editable
+PowerPoint slides.
 
 ## What It Does
 
-- Inspects source PPTX files and rendered slide images.
+- Guides Codex through high-fidelity image-to-PPT reconstruction.
 - Requires one approved sample slide before batch conversion.
-- Tracks every non-text visual element with a crop, registry, image-generation,
-  or native-shape decision.
-- Rebuilds text as editable PowerPoint text boxes whenever text is not part of
-  a photo, logo, screenshot, or other baked-in visual.
+- Converts slide-image content into editable PowerPoint objects where possible.
+- Preserves complex visual elements as complete high-resolution image assets
+  when native shapes would reduce fidelity.
+- Rebuilds visible text as editable PowerPoint text boxes unless the text is
+  part of a logo, product photo, screenshot, or another baked-in visual.
 - Validates asset plans, layout plans, media references, and generated PPTX
   packages before delivery.
+
+## What It Does Not Do
+
+- It does not directly generate a complete PPT from a text prompt.
+- It does not replace a presentation design model or image-generation model.
+- It does not remove the need for source slide images.
+- It does not guarantee that every visual element becomes a native editable
+  shape; fidelity is prioritized when exact shape reconstruction would be
+  unreliable.
+
+## Recommended Workflow
+
+1. Generate or obtain PPT slide images.
+   - Recommended: use `gpt-image` to create polished slide images first.
+   - Also supported: rendered images from an existing flattened/image-only
+     PowerPoint deck.
+2. Install or copy `ppt-image-to-editable/` as a Codex skill.
+3. Ask Codex to inspect the slide image or image-only PPTX.
+4. Build exactly one editable sample slide first.
+5. Review the sample and approve the reconstruction style.
+6. After approval, create an asset decision plan for every requested slide.
+7. Build page-specific layout plans.
+8. Convert the full deck and validate the generated `.pptx`.
 
 ## Project Structure
 
 ```text
 .
-├── README.md
-├── requirements.txt
-├── examples/
-│   ├── asset_decision_plan.example.json
-│   └── layout_plan.example.json
-└── ppt-image-to-editable/
-    ├── SKILL.md
-    ├── agents/
-    │   └── openai.yaml
-    ├── references/
-    │   ├── conversion-playbook.md
-    │   └── object-reconstruction.md
-    └── scripts/
-        ├── build_element_sheet_prompt.py
-        ├── element_registry.py
-        ├── pptx_object_helpers.js
-        ├── split_transparent_sheet.py
-        ├── validate_asset_decision_plan.py
-        ├── validate_layout_plan.py
-        ├── validate_media_refs.py
-        └── validate_pptx_integrity.py
+|-- README.md
+|-- README.zh-CN.md
+|-- requirements.txt
+|-- examples/
+|   |-- asset_decision_plan.example.json
+|   `-- layout_plan.example.json
+`-- ppt-image-to-editable/
+    |-- SKILL.md
+    |-- agents/
+    |   `-- openai.yaml
+    |-- references/
+    |   |-- conversion-playbook.md
+    |   `-- object-reconstruction.md
+    `-- scripts/
+        |-- build_element_sheet_prompt.py
+        |-- element_registry.py
+        |-- pptx_object_helpers.js
+        |-- split_transparent_sheet.py
+        |-- validate_asset_decision_plan.py
+        |-- validate_layout_plan.py
+        |-- validate_media_refs.py
+        `-- validate_pptx_integrity.py
 ```
 
 ## Requirements
@@ -60,17 +93,7 @@ Install Python dependencies:
 python -m pip install -r requirements.txt
 ```
 
-## Quick Start
-
-1. Copy or install `ppt-image-to-editable/` as a Codex skill.
-2. Inspect a source deck and render representative slide PNGs.
-3. Build exactly one sample editable slide first.
-4. After sample approval, create an asset decision plan for every requested
-   slide.
-5. Validate plans and media before building the final PPTX.
-6. Validate the generated PPTX package.
-
-Example validation commands:
+## Validation Examples
 
 ```bash
 python ppt-image-to-editable/scripts/validate_asset_decision_plan.py examples/asset_decision_plan.example.json --slides 1
@@ -78,18 +101,19 @@ python ppt-image-to-editable/scripts/validate_layout_plan.py examples/layout_pla
 python ppt-image-to-editable/scripts/validate_pptx_integrity.py editable_output.pptx --strict
 ```
 
-## Core Workflow
+## Conversion Principles
 
-The skill intentionally avoids quick screenshot-only conversion. Each deck
-should follow this order:
+The skill avoids shallow screenshot-only conversion. The target output should
+look close to the source image while exposing useful editable layers:
 
-1. Inspect the deck size, page count, and whether slides are flattened images.
+1. Inspect slide size, page count, and whether the deck is flattened.
 2. Classify page types such as cover, directory, content cards, charts, tables,
    process flows, and product-heavy pages.
 3. Produce one sample slide and wait for approval.
-4. Audit assets for every requested page.
-5. Build page-specific layout plans.
-6. Assemble visual layers, then editable text layers.
+4. Audit every non-text visual element.
+5. Decide whether each visual should be cropped, reused from a registry,
+   regenerated as an image, or rebuilt as a native shape.
+6. Place visual layers first and editable text layers last.
 7. Run validation before delivery.
 
 ## Validation Tools
