@@ -1,0 +1,3 @@
+display_name: PPT Image to Editable
+short_description: Convert image-only PPT decks into editable decks with a sample-first workflow.
+default_prompt: Convert this image-only PPT into an editable PowerPoint deck. First generate one sample slide for approval, then continue only after confirmation.

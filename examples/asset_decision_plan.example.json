@@ -1,0 +1,30 @@
+{
+  "slides": [
+    {
+      "slide": 1,
+      "asset_candidates": [
+        {
+          "name": "cover product group",
+          "decision": "crop",
+          "reason": "complete isolated product render can be cropped without text or neighboring strokes",
+          "crop_box": [240, 180, 920, 620]
+        },
+        {
+          "name": "status badge",
+          "decision": "registry",
+          "registry_candidate": "shield_check_badge",
+          "similarity_estimate": 82,
+          "similarity_basis": "same circular badge, blue stroke style, and check-mark silhouette"
+        },
+        {
+          "name": "title underline",
+          "decision": "native_shape",
+          "reason": "simple straight line with solid color",
+          "native_shape_basis": "single line, no gradient, no shadow, fixed stroke width"
+        }
+      ],
+      "no_new_image_assets_required": true
+    }
+  ]
+}
+

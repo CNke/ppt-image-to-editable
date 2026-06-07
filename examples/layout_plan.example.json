@@ -1,0 +1,53 @@
+{
+  "slides": [
+    {
+      "slide": 1,
+      "size": {
+        "w": 13.333,
+        "h": 7.5
+      },
+      "text_boxes": [
+        {
+          "name": "main title",
+          "text": "Image-only PPT to Editable PPT",
+          "x": 0.8,
+          "y": 0.6,
+          "w": 7.4,
+          "h": 0.6,
+          "font_size": 30,
+          "line_break_policy": "single_line"
+        }
+      ],
+      "shapes": [
+        {
+          "name": "title underline",
+          "kind": "line",
+          "x": 0.82,
+          "y": 1.32,
+          "w": 3.8,
+          "h": 0,
+          "native_shape_basis": "simple straight line with solid stroke"
+        }
+      ],
+      "arrows": [
+        {
+          "name": "sample flow arrow",
+          "x": 4.2,
+          "y": 3.2,
+          "w": 1.4,
+          "h": 0,
+          "arrow_kind": "line_end_triangle",
+          "line_width": 1.5,
+          "stroke": "#2F5597",
+          "cap": "round"
+        }
+      ],
+      "layer_order": [
+        "background",
+        "visual-assets",
+        "native-shapes",
+        "editable-text"
+      ]
+    }
+  ]
+}

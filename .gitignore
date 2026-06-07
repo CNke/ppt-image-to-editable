@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Generated conversion outputs
+outputs/
+assets/
+samples/
+*.pptx
+*.ppt
+*.pdf
+*.docx
+*.doc
+*.xlsx
+*.xls
+
+# Rendered previews and image batches
+*.png
+*.jpg
+*.jpeg
+*.tif
+*.tiff
+*.webp
+
+# Local/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
